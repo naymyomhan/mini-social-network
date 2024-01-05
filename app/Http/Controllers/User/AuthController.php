@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exceptions\RegistrationFailException;
 use App\Exceptions\UserRegistrationException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRegisterRequest;
@@ -23,15 +24,19 @@ class AuthController extends Controller
     public function register(UserRegisterRequest $request)
     {
         try {
+            DB::beginTransaction();
             $user = $this->userAuthService->register($request->validated());
+            $token = $user->createToken("user-token")->plainTextToken;
 
             $data = [
                 "user" => $user,
-                "token" => $user->token,
+                "token" => $token,
             ];
+            DB::commit();
             return response()->success($data, 'User register successfully', 201);
         } catch (\Throwable $th) {
-            throw $th;
+            DB::rollBack();
+            throw RegistrationFailException::registrationFail($th->getMessage());
         }
     }
 }

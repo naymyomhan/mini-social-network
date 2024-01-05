@@ -12,8 +12,7 @@ class UserAuthService
     {
         try {
             $user = User::create($userData);
-            $token = $user->createToken("user-token")->plainTextToken;
-            return $user->fresh('token');
+            return $user;
         } catch (\Throwable $th) {
             Log::error("User registration failed: {$th->getMessage()}");
             throw RegistrationFailException::registrationFail($th->getMessage());
