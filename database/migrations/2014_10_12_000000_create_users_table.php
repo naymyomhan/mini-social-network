@@ -32,7 +32,7 @@ return new class extends Migration
             $table->integer('following_count')->default(0);
 
             $table->rememberToken();
-            $table->timestamp('last_login_at');
+            $table->timestamp('last_login_at')->useCurrent();
 
             $table->timestamps();
         });
