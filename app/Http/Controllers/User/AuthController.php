@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Exceptions\RegistrationFailException;
 use App\Exceptions\UserRegistrationException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
 use App\Services\User\UserAuthService;
@@ -31,6 +32,15 @@ class AuthController extends Controller
     {
         $token = $this->userAuthService->register($request->validated());
         return $this->success('Registration successful', [
+            'token' => $token,
+        ]);
+    }
+
+    public function login(UserLoginRequest $request)
+    {
+        $token = $this->userAuthService->login($request->validated());
+
+        return $this->success('Login successful', [
             'token' => $token,
         ]);
     }

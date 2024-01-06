@@ -8,6 +8,9 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -38,6 +41,18 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof ValidationException) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST, $this->getErrors($exception->errors()));
+        }
+
+        if ($exception instanceof ResourceNotFoundException) {
+            return $this->error($exception->getMessage(), Response::HTTP_NOT_FOUND);
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->error('Route not found', Response::HTTP_NOT_FOUND);
+        }
+
+        if ($exception instanceof ResourceForbiddenException) {
+            return $this->error($exception->getMessage(), Response::HTTP_FORBIDDEN);
         }
 
         if ($exception instanceof RegistrationFailException) {

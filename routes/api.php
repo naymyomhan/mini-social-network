@@ -17,8 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 //Register
 Route::post('/register', [AuthController::class, 'register']);
-
-//Login
+Route::post('/login', [AuthController::class, 'login']);
 
 //Update Profile
 
