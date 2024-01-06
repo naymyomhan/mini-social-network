@@ -6,8 +6,8 @@ use Exception;
 
 class RegistrationFailException extends Exception
 {
-    public static function registrationFail(string $message = "Something went wrong"): RegistrationFailException
+    public function __construct($message = "Registration fail", $code = 500)
     {
-        return new self(message: $message, code: 500);
+        parent::__construct($message, $code);
     }
 }
