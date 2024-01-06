@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class UserAuthService
 {
+    //Register
     public function register(array $userData): string
     {
         DB::beginTransaction();
@@ -26,6 +27,7 @@ class UserAuthService
         }
     }
 
+    //Login
     public function login(array $loginData): string
     {
         $user = User::where('email', $loginData['email'])->first();

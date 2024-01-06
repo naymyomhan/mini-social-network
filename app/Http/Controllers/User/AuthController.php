@@ -28,6 +28,7 @@ class AuthController extends Controller
         $this->userAuthService = $userAuthService;
     }
 
+    //Register
     public function register(UserRegisterRequest $request)
     {
         $token = $this->userAuthService->register($request->validated());
@@ -36,6 +37,7 @@ class AuthController extends Controller
         ]);
     }
 
+    //Login
     public function login(UserLoginRequest $request)
     {
         $token = $this->userAuthService->login($request->validated());

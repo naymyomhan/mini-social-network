@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Traits\ResponseTraits;
 use Illuminate\Validation\ValidationException;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -37,6 +38,7 @@ class Handler extends ExceptionHandler
         });
     }
 
+
     public function customExceptionHandeller(Exception $exception, Request $request)
     {
         if ($exception instanceof ValidationException) {
@@ -53,6 +55,10 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof ResourceForbiddenException) {
             return $this->error($exception->getMessage(), Response::HTTP_FORBIDDEN);
+        }
+
+        if ($exception instanceof AuthenticationException) {
+            return $this->error($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
 
         if ($exception instanceof RegistrationFailException) {

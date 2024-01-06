@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,11 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Register
 Route::post('/register', [AuthController::class, 'register']);
+
 Route::post('/login', [AuthController::class, 'login']);
 
-//Update Profile
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me/profile', [ProfileController::class, 'getMyProfile']);
+    Route::post('/me/profile/update', [ProfileController::class, 'updateMyProfile']);
+});
 
 //Posts CRUD
 
