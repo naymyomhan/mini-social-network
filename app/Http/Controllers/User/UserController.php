@@ -28,7 +28,20 @@ class UserController extends Controller
     public function getUsers()
     {
         $users = $this->userService->getUsers();
-        return $this->success('Get users successful', UserResource::collection($users));
+        $data = [
+            'users' => UserResource::collection($users),
+            'meta' => [
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+                'total' => $users->total(),
+                'per_page' => $users->perPage(),
+            ],
+            'links' => [
+                'next' => $users->nextPageUrl(),
+                'prev' => $users->previousPageUrl(),
+            ],
+        ];
+        return $this->success('Get users successful', $data);
     }
 
     //Get User Profile

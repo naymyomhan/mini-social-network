@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UploadPostRequest;
+use App\Http\Resources\PostResource;
 use App\Services\User\PostService;
 use App\Traits\ResponseTraits;
 use Illuminate\Http\Request;
@@ -26,7 +27,21 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = $this->postService->getPosts();
+        $data = [
+            'posts' => PostResource::collection($posts),
+            'meta' => [
+                'current_page' => $posts->currentPage(),
+                'last_page' => $posts->lastPage(),
+                'total' => $posts->total(),
+                'per_page' => $posts->perPage(),
+            ],
+            'links' => [
+                'next' => $posts->nextPageUrl(),
+                'prev' => $posts->previousPageUrl(),
+            ],
+        ];
+        return $this->success('Get posts successful', $data);
     }
 
     /**
@@ -43,7 +58,7 @@ class PostController extends Controller
     public function store(UploadPostRequest $request)
     {
         $newPost = $this->postService->uploadPost($request->validated());
-        return $this->success('Upload new post successful', $newPost);
+        return $this->success('Upload new post successful', new PostResource($newPost));
     }
 
     /**
