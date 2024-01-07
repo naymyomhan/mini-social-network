@@ -4,9 +4,11 @@ namespace App\Services\User;
 
 use App\Exceptions\PostUploadFailException;
 use App\Helpers\FileHelper;
+use App\Mail\NewPostMail;
 use App\Models\Post;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PostService
@@ -43,6 +45,9 @@ class PostService
 
             $postData['user_id'] = Auth::id();
             $newPost = Post::create($postData);
+
+            Mail::to('naymyomhan@gmail.com')->send(new NewPostMail());
+
             return $newPost;
         } catch (\Throwable $th) {
             throw new PostUploadFailException($th->getMessage());
