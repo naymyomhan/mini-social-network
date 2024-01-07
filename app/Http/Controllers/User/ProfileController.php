@@ -23,12 +23,14 @@ class ProfileController extends Controller
         $this->profileService = $profileService;
     }
 
+    //Get Own Profile
     public function getMyProfile()
     {
         $user = $this->profileService->getMyProfile();
         return $this->success('Get profile successful', new MyProfileResource($user));
     }
 
+    //Update Own Profile
     public function updateMyProfile(UpdateProfileRequest $request)
     {
         $user = $this->profileService->updateMyProfile($request->validated());

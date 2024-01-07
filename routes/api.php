@@ -24,6 +24,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me/profile', [ProfileController::class, 'getMyProfile']);
     Route::post('/me/profile/update', [ProfileController::class, 'updateMyProfile']);
+
+    Route::get('/users', [UserController::class, 'getUsers']);
+    Route::get('/user/{id}', [UserController::class, 'getUserProfile']);
 });
 
 //Posts CRUD

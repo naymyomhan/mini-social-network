@@ -33,46 +33,57 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->renderable(function (Exception $exception, Request $request) {
-            return $this->customExceptionHandeller($exception, $request);
+        $this->renderable(function (Exception $e, Request $request) {
+            return $this->customExceptionHandeller($e, $request);
         });
     }
 
 
-    public function customExceptionHandeller(Exception $exception, Request $request)
+    public function customExceptionHandeller(Exception $e, Request $request)
     {
-        if ($exception instanceof ValidationException) {
-            return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST, $this->getErrors($exception->errors()));
+        if ($e instanceof ValidationException) {
+            return $this->error($e->getMessage(), Response::HTTP_BAD_REQUEST, $this->getErrors($e->errors()));
         }
 
-        if ($exception instanceof ResourceNotFoundException) {
-            return $this->error($exception->getMessage(), Response::HTTP_NOT_FOUND);
+        if ($e instanceof ResourceNotFoundException) {
+            return $this->error($e->getMessage(), Response::HTTP_NOT_FOUND);
         }
 
-        if ($exception instanceof NotFoundHttpException) {
+        if ($e instanceof NotFoundHttpException) {
             return $this->error('Route not found', Response::HTTP_NOT_FOUND);
         }
 
-        if ($exception instanceof ResourceForbiddenException) {
-            return $this->error($exception->getMessage(), Response::HTTP_FORBIDDEN);
+
+
+        if ($e instanceof AuthenticationException) {
+            return $this->error($e->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
 
-        if ($exception instanceof AuthenticationException) {
-            return $this->error($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
+
+        /**
+         * Custom Exceptions
+         */
+
+        if ($e instanceof RegistrationFailException) {
+            return $this->error($e->getMessage(), $e->getCode());
         }
 
-        if ($exception instanceof RegistrationFailException) {
-            return $this->error($exception->getMessage(), $exception->getCode());
+        if ($e instanceof ResourceForbiddenException) {
+            return $this->error($e->getMessage(), Response::HTTP_FORBIDDEN);
+        }
+
+        if ($e instanceof UpdateProfileFailException) {
+            return $this->error($e->getMessage(), $e->getCode());
         }
     }
 
-    private function getErrors(array $errorArr): array
+    private function getErrors(array $arr): array
     {
         return array_map(function ($message, $key) {
             return [
                 'label'   => $key,
                 'detail' => $message[0],
             ];
-        }, $errorArr, array_keys($errorArr));
+        }, $arr, array_keys($arr));
     }
 }

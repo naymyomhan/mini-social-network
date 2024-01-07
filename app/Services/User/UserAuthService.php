@@ -32,7 +32,7 @@ class UserAuthService
     {
         $user = User::where('email', $loginData['email'])->first();
 
-        if (!$user) {
+        if (is_null($user)) {
             throw new ResourceNotFoundException('User not found');
         }
 

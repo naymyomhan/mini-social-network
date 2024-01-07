@@ -4,9 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
-class MyProfileResource extends JsonResource
+class UserDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,8 +17,7 @@ class MyProfileResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'profile_picture' => Storage::disk('minio')->temporaryUrl($this->profile_picture, now()->addMinutes(5)),
+            'profile_picture' => $this->profile_picture,
             'dob' => $this->dob,
             'gender' => $this->gender,
             'bio' => $this->bio,
