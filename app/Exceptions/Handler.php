@@ -75,6 +75,14 @@ class Handler extends ExceptionHandler
         if ($e instanceof UpdateProfileFailException) {
             return $this->error($e->getMessage(), $e->getCode());
         }
+
+        if ($e instanceof FileUploadFailException) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+
+        if ($e instanceof PostUploadFailException) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
     }
 
     private function getErrors(array $arr): array

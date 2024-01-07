@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Exceptions\UpdateProfileFailException;
+use App\Helpers\FileHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -10,14 +11,23 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class ProfileService
 {
-    //Get My Profile
+    /**
+     * Retrieve the authenticated user's profile.
+     *
+     * @return \App\Models\User
+     */
     public function getMyProfile(): User
     {
         $user = Auth::guard('user')->user();
         return $user;
     }
 
-    //Update My Profile
+    /**
+     * Update the user's profile information based on the provided data.
+     *
+     * @param array
+     * @return \App\Models\User
+     */
     public function updateMyProfile($userData): User
     {
         /** @var \App\Models\User $user **/
@@ -35,14 +45,13 @@ class ProfileService
         if (isset($userData['profile_picture'])) {
             $file = $userData['profile_picture'];
             try {
-                $filename = $this->generateUniqueFilename($file);
+                $filename = FileHelper::generateUniqueFilename($file, 'profile');
                 Storage::disk('minio')->put($filename, file_get_contents($file));
                 $user->profile_picture = $filename;
             } catch (\Exception $e) {
                 throw new UpdateProfileFailException($e->getMessage());
             }
         }
-
 
         try {
             $user->save();
@@ -51,17 +60,5 @@ class ProfileService
         }
 
         return $user;
-    }
-
-    private function generateUniqueFilename($file): string
-    {
-        $extension = $file->extension();
-        $filename = 'profile_pictures/' . uniqid() . '.' . $extension;
-
-        while (Storage::disk('minio')->exists($filename)) {
-            $filename = 'profile_pictures/' . uniqid() . '.' . $extension;
-        }
-
-        return $filename;
     }
 }

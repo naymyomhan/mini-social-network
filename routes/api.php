@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\PostController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
@@ -27,6 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/users', [UserController::class, 'getUsers']);
     Route::get('/user/{id}', [UserController::class, 'getUserProfile']);
+
+    Route::apiResource('/posts', PostController::class);
 });
 
 //Posts CRUD

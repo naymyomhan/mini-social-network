@@ -21,7 +21,13 @@ class UserService
         return $users;
     }
 
-    //Get User Profile
+    /**
+     * Retrieve the user profile based on the provided ID.
+     *
+     * @param integer $id
+     * @param integer $selfId
+     * @return User
+     */
     public function getUserProfile($id, $selfId): User
     {
         if ($id === $selfId) {
