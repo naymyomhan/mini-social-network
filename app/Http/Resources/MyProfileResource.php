@@ -19,7 +19,7 @@ class MyProfileResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'profile_picture' => Storage::disk('minio')->temporaryUrl($this->profile_picture, now()->addMinutes(5)),
+            'profile_picture' => $this->getFirstMediaUrl('profile_pictures'),
             'dob' => $this->dob,
             'gender' => $this->gender,
             'bio' => $this->bio,

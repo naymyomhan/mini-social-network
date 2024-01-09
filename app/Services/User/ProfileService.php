@@ -45,8 +45,14 @@ class ProfileService
         if (isset($userData['profile_picture'])) {
             $file = $userData['profile_picture'];
             try {
+                $mediaItems = $user->getMedia('profile_pictures');
+                foreach ($mediaItems as $media) {
+                    $media->delete();
+                }
+
                 $filename = FileHelper::generateUniqueFilename($file, 'profile');
-                Storage::disk('minio')->put($filename, file_get_contents($file));
+                $user->addMedia($file)
+                    ->toMediaCollection('profile_pictures', 'minio');
                 $user->profile_picture = $filename;
             } catch (\Exception $e) {
                 throw new UpdateProfileFailException($e->getMessage());
