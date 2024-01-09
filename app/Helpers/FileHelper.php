@@ -15,13 +15,13 @@ class FileHelper
      * @param \Illuminate\Http\UploadedFile
      * @return string
      */
-    public static function generateUniqueFilename(UploadedFile $file, $path): string
+    public static function generateUniqueFilename(UploadedFile $file): string
     {
         $extension = $file->extension();
-        $filename = $path . '/' . uniqid() . '.' . $extension;
+        $filename =  uniqid() . '.' . $extension;
 
         while (Storage::disk('minio')->exists($filename)) {
-            $filename = $path . '/' . uniqid() . '.' . $extension;
+            $filename =  uniqid() . '.' . $extension;
         }
 
         return $filename;

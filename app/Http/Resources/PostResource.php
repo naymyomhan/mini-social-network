@@ -24,18 +24,20 @@ class PostResource extends JsonResource
             'share_count' => $this->share_count,
             'user' => new UserResource($this->user),
             'topic' => new TopicResource($this->topic),
-            'images' => $this->getImages($this->images),
+            'images' => $this->getImages(),
         ];
     }
 
-    private function getImages($imagesString): array
+    private function getImages(): array
     {
-        $imagesArray = explode(',', $imagesString);
-        $images = [];
-        foreach ($imagesArray as $image) {
-            $images[] = Storage::disk('minio')->temporaryUrl($image, now()->addMinutes(5));
+        $imageList = [];
+        $mediaItems = $this->getMedia('post_images');
+
+        foreach ($mediaItems as $item) {
+            $imageList[] = $item->getUrl();
         }
 
-        return $images;
+
+        return $imageList;
     }
 }

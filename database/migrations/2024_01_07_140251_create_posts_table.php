@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('topic_id')->constrained()->onDelete('restrict');
 
             $table->text('body');
-            $table->text('images')->nullable();
 
             $table->boolean('commentable')->default(true);
             $table->boolean('pin')->default(false);

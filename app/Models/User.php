@@ -6,9 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\File;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -23,7 +26,6 @@ class User extends Authenticatable implements HasMedia
         'name',
         'email',
         'password',
-        'profile_picture',
         'dob',
         'gender',
         'bio',
@@ -49,6 +51,22 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')
+            ->singleFile()
+            // ->useFallbackUrl(Storage::disk('minio')->url('/images/default-avater.jpg'))
+            ->acceptsFile(function (File $file) {
+                return $file->mimeType === 'image/jpeg';
+            })
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(100)
+                    ->height(100);
+            });
+    }
 
 
     public function posts()

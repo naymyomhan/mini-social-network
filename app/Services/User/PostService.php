@@ -32,19 +32,19 @@ class PostService
     public function uploadPost($postData)
     {
         try {
-            if (isset($postData['images'])) {
-                $images = [];
-                $files = $postData['images'];
-                foreach ($files as $file) {
-                    $images[] = FileHelper::uploadFile($file, 'post');
-                }
-                $postData['images'] = implode(',', $images);
-            }
 
             $postData['user_id'] = Auth::id();
             $newPost = Post::create($postData);
 
-
+            if (isset($postData['images'])) {
+                $images = $postData['images'];
+                foreach ($images as $images) {
+                    $filename = FileHelper::generateUniqueFilename($images);
+                    $newPost->addMedia($images)
+                        ->usingFileName($filename)
+                        ->toMediaCollection('post_images', 'minio');
+                }
+            }
 
             return $newPost;
         } catch (\Throwable $th) {

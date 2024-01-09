@@ -36,24 +36,19 @@ class ProfileService
         $fillableProperties = $user->getFillable();
 
         foreach ($userData as $key => $value) {
-            if (in_array($key, $fillableProperties) && $value !== null) {
+            if (in_array($key, $fillableProperties) && $value !== null && $key !== 'avatar') {
                 $user->$key = $value;
             }
         }
 
         // Handle profile picture upload
-        if (isset($userData['profile_picture'])) {
-            $file = $userData['profile_picture'];
+        if (isset($userData['avatar'])) {
+            $image = $userData['avatar'];
             try {
-                $mediaItems = $user->getMedia('profile_pictures');
-                foreach ($mediaItems as $media) {
-                    $media->delete();
-                }
-
-                $filename = FileHelper::generateUniqueFilename($file, 'profile');
-                $user->addMedia($file)
-                    ->toMediaCollection('profile_pictures', 'minio');
-                $user->profile_picture = $filename;
+                $imagename = FileHelper::generateUniqueFilename($image);
+                $user->addMedia($image)
+                    ->usingFileName($imagename)
+                    ->toMediaCollection('avatar');
             } catch (\Exception $e) {
                 throw new UpdateProfileFailException($e->getMessage());
             }
