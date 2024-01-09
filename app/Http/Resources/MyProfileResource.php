@@ -20,7 +20,7 @@ class MyProfileResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'avatar' => $this->getFirstMediaUrl('avatar'),
-            'avatar_thumbnail' => $this->getMedia('avatar')[0]->getUrl('thumb'),
+            'avatar_thumbnail' =>  $this->getFirstMediaUrl('avatar', 'thumb'),
             'dob' => $this->dob,
             'gender' => $this->gender,
             'bio' => $this->bio,

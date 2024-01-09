@@ -17,6 +17,7 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'title' => $this->title,
             'body' => $this->body,
             'commentable' => $this->commentable,
             'react_count' => $this->react_count,
@@ -24,7 +25,7 @@ class PostResource extends JsonResource
             'share_count' => $this->share_count,
             'user' => new UserResource($this->user),
             'topic' => new TopicResource($this->topic),
-            'images' => $this->getImages(),
+            'thumbnails' => $this->getImages(),
         ];
     }
 
@@ -34,7 +35,7 @@ class PostResource extends JsonResource
         $mediaItems = $this->getMedia('post_images');
 
         foreach ($mediaItems as $item) {
-            $imageList[] = $item->getUrl();
+            $imageList[] = $item->getUrl('thumb');
         }
 
 

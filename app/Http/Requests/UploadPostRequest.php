@@ -23,6 +23,7 @@ class UploadPostRequest extends FormRequest
     {
         return [
             'topic_id' => 'required|exists:topics,id',
+            'title' => 'required|string',
             'body' => 'required|string',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];

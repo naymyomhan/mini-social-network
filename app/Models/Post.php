@@ -21,6 +21,7 @@ class Post extends Model implements HasMedia
     protected $fillable = [
         'user_id',
         'topic_id',
+        'title',
         'body',
         'commentable',
         'pin',
@@ -28,15 +29,22 @@ class Post extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('avatar')
+        $this->addMediaCollection('post_images')
             ->acceptsFile(function (File $file) {
-                return $file->mimeType === 'image/jpeg';
+                $allowedMimeTypes = [
+                    'image/jpeg',
+                    'image/png',
+                    'image/gif',
+                    'image/svg+xml',
+                    'image/webp',
+                ];
+                return in_array($file->mimeType, $allowedMimeTypes);
             })
             ->registerMediaConversions(function (Media $media) {
                 $this
                     ->addMediaConversion('thumb')
-                    ->width(100)
-                    ->height(100);
+                    ->width(200)
+                    ->height(200);
             });
     }
 

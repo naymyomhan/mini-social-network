@@ -42,7 +42,7 @@ class PostService
                     $filename = FileHelper::generateUniqueFilename($images);
                     $newPost->addMedia($images)
                         ->usingFileName($filename)
-                        ->toMediaCollection('post_images', 'minio');
+                        ->toMediaCollection('post_images');
                 }
             }
 

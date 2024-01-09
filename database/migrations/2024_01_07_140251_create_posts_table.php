@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('topic_id')->constrained()->onDelete('restrict');
 
+            $table->string('title');
             $table->text('body');
 
             $table->boolean('commentable')->default(true);

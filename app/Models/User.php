@@ -58,7 +58,14 @@ class User extends Authenticatable implements HasMedia
             ->singleFile()
             // ->useFallbackUrl(Storage::disk('minio')->url('/images/default-avater.jpg'))
             ->acceptsFile(function (File $file) {
-                return $file->mimeType === 'image/jpeg';
+                $allowedMimeTypes = [
+                    'image/jpeg',
+                    'image/png',
+                    'image/gif',
+                    'image/svg+xml',
+                    'image/webp',
+                ];
+                return in_array($file->mimeType, $allowedMimeTypes);
             })
             ->registerMediaConversions(function (Media $media) {
                 $this
