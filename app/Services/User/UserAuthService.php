@@ -5,6 +5,7 @@ namespace App\Services\User;
 use App\Exceptions\RegistrationFailException;
 use App\Exceptions\ResourceForbiddenException;
 use App\Models\User;
+use App\Notifications\WelcomeNotificaton;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -23,6 +24,7 @@ class UserAuthService
         DB::beginTransaction();
         try {
             $user = User::create($userData);
+            $user->notify(new WelcomeNotificaton());
             $token = $user->createToken('user-token')->plainTextToken;
             DB::commit();
             return $token;

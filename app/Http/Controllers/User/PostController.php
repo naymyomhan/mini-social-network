@@ -66,7 +66,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = $this->postService->getPostDetail($id);
+        return $this->success('Get post detail successfull', new PostResource($post));
     }
 
     /**

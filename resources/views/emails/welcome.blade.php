@@ -5,8 +5,8 @@
 </head>
 <body>
 
- <h1>New Post Is Uploaded</h1>
- <p>There is a new post uploaded in mini-social</p>
+ <h1>Hello {{$user->name}}</h1>
+ <p>This is the welcome message for new user,</p>
 
 </body>
 </html>

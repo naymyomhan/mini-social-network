@@ -23,6 +23,12 @@ class PostService
         return $posts;
     }
 
+    public function getPostDetail($id): Post
+    {
+        $post = Post::findOrFail($id);
+        return $post;
+    }
+
     /**
      * Upload Post
      *
