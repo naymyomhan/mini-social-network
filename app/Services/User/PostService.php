@@ -57,4 +57,8 @@ class PostService
             throw new PostUploadFailException($th->getMessage());
         }
     }
+
+    public function addReact($postId)
+    {
+    }
 }

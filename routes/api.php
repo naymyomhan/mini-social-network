@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\User\PostController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\ReactController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,9 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/{id}', [UserController::class, 'getUserProfile']);
 
     Route::apiResource('/posts', PostController::class);
-});
 
-//Posts CRUD
+    Route::apiResource('/reacts', ReactController::class);
+
+    Route::apiResource('/comments', CommentController::class);
+});
 
 //New Feed
 
