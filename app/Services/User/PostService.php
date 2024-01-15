@@ -2,15 +2,23 @@
 
 namespace App\Services\User;
 
+use App\Exceptions\CreateDataFailException;
 use App\Exceptions\PostUploadFailException;
+use App\Exceptions\UserAlreadyReactedException;
 use App\Helpers\FileHelper;
 use App\Models\Post;
+use App\Models\React;
+use App\Traits\ResponseTraits;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class PostService
 {
+    use ResponseTraits;
 
     public function getPosts(): LengthAwarePaginator
     {
@@ -38,7 +46,6 @@ class PostService
     public function uploadPost($postData)
     {
         try {
-
             $postData['user_id'] = Auth::id();
             $newPost = Post::create($postData);
 
@@ -56,9 +63,5 @@ class PostService
         } catch (\Throwable $th) {
             throw new PostUploadFailException($th->getMessage());
         }
-    }
-
-    public function addReact($postId)
-    {
     }
 }

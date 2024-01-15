@@ -4,63 +4,32 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReactRequest;
-use Illuminate\Http\Request;
+use App\Services\User\ReactService;
+use App\Traits\ResponseTraits;
 
 class ReactController extends Controller
 {
+    use ResponseTraits;
     /**
-     * Display a listing of the resource.
+     * @var ReactService $reactService;
      */
-    public function index()
+    protected ReactService $reactService;
+
+    public function __construct(ReactService $reactService)
     {
-        //
+        $this->reactService = $reactService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function addReact(ReactRequest $request, $id)
     {
-        //
+        $react = $this->reactService->addReact($id, $request->reaction);
+        return $this->success('Add reaction successful', $react);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(ReactRequest $request)
+    public function removeReact($id)
     {
-        //
-    }
+        $this->reactService->removeReact($id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return $this->success('Remove reaction successful');
     }
 }

@@ -83,6 +83,18 @@ class Handler extends ExceptionHandler
         if ($e instanceof PostUploadFailException) {
             return $this->error($e->getMessage(), $e->getCode());
         }
+
+        if ($e instanceof CreateDataFailException) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+
+        if ($e instanceof DeleteDataFailException) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+
+        if ($e instanceof UserAlreadyReactedException) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
     }
 
     private function getErrors(array $arr): array
