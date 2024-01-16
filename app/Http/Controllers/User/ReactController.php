@@ -29,7 +29,6 @@ class ReactController extends Controller
     public function removeReact($id)
     {
         $this->reactService->removeReact($id);
-
         return $this->success('Remove reaction successful');
     }
 }

@@ -27,30 +27,36 @@ class ReactService
      */
     public function addReact($postId, $reaction): React
     {
-        //check if already have reaction
-        $existingReact = React::where('user_id', Auth::guard('user')->id())
-            ->where('post_id', $postId)
-            ->first();
-
-        if ($existingReact) {
-            throw new UserAlreadyReactedException();
-        }
-
         try {
             DB::beginTransaction();
             $post = Post::findOrFail($postId);
 
-            $newReact = React::create([
-                'user_id' => Auth::guard('user')->id(),
-                'post_id' => $postId,
-                'reaction' => $reaction,
-            ]);
+            //check if already have reaction
+            $react = React::where('user_id', Auth::guard('user')->id())
+                ->where('post_id', $postId)
+                ->first();
 
-            $post->increment('react_count');
+            if ($react) {
+                if ($react->reaction === $reaction) {
+                    //reaction is already exists and also the same reaction type
+                    throw new UserAlreadyReactedException();
+                } else {
+                    //TODO::edit reaction
+                    $react->reaction = $reaction;
+                    $react->save();
+                }
+            } else {
+                $react = React::create([
+                    'user_id' => Auth::guard('user')->id(),
+                    'post_id' => $postId,
+                    'reaction' => $reaction,
+                ]);
+                $post->increment('react_count');
+            }
 
             DB::commit();
 
-            return $newReact;
+            return $react;
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
             throw new ResourceNotFoundException('Post not found');
