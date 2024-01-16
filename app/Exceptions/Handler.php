@@ -95,6 +95,10 @@ class Handler extends ExceptionHandler
         if ($e instanceof UserAlreadyReactedException) {
             return $this->error($e->getMessage(), $e->getCode());
         }
+
+        if ($e instanceof TopicAlreadySubscribeException) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
     }
 
     private function getErrors(array $arr): array

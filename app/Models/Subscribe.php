@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class Subscribe extends Model
 {
     use HasFactory;
 
@@ -15,16 +15,18 @@ class Topic extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'topic',
+        'user_id',
+        'topic_id',
     ];
 
-    public function posts()
+    public function user()
     {
-        return $this->hasMany(Post::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function subscriptions()
+
+    public function topic()
     {
-        return $this->hasMany(Subscribe::class, 'topic_id');
+        return $this->belongsTo(Topic::class, 'topic_id');
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\User\PostController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\ReactController;
+use App\Http\Controllers\User\TopicController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/{id}', [UserController::class, 'getUserProfile']);
 
     //Topic
+    Route::get('/topics', [TopicController::class, 'getTopics']);
+    Route::post('/topics/{id}/subscribe', [TopicController::class, 'subscribeTopic']);
 
     //Post
     Route::apiResource('/posts', PostController::class);
@@ -44,10 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
     //Comments
     Route::post('/posts/{id}/comment', [CommentController::class, 'addComment']);
     Route::post('/comment/{id}/remove', [CommentController::class, 'removeComment']);
-
-
-    //New Feed
-
 
     //Follow
 

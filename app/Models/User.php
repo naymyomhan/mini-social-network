@@ -80,4 +80,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Post::class);
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscribe::class, 'user_id');
+    }
 }
