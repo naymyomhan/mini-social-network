@@ -57,4 +57,14 @@ class Post extends Model implements HasMedia
     {
         return $this->belongsTo(Topic::class);
     }
+
+    public function reacts()
+    {
+        return $this->hasMany(React::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
