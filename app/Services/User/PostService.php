@@ -26,7 +26,7 @@ class PostService
 
         //TODO::Search and filters
 
-        $posts = $query->paginate(5);
+        $posts = $query->paginate(20);
 
         return $posts;
     }

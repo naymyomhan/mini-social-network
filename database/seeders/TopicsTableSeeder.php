@@ -19,6 +19,12 @@ class TopicsTableSeeder extends Seeder
             ['topic' => 'Movie'],
             ['topic' => 'Digital Art'],
             ['topic' => 'Photography'],
+            ['topic' => 'Videography'],
+            ['topic' => 'Programming'],
+            ['topic' => 'Audio Design'],
+            ['topic' => 'Health'],
+            ['topic' => 'Relatinoship'],
+            ['topic' => 'Education'],
         ];
 
         DB::table('topics')->insert($topics);

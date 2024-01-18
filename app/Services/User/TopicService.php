@@ -29,6 +29,14 @@ class TopicService
         return $topics;
     }
 
+    public function getSubscribedTopics(): Collection
+    {
+        $user = Auth::guard('user')->user();
+        $subscriptions = $user->subscriptions;
+
+        return $subscriptions;
+    }
+
     /**
      * Subscribe to topic
      *

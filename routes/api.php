@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Topic
     Route::get('/topics', [TopicController::class, 'getTopics']);
+    Route::get('/topics/subscribed', [TopicController::class, 'getSubscribedTopics']);
     Route::post('/topics/{id}/subscribe', [TopicController::class, 'subscribeTopic']);
 
     //Post

@@ -81,6 +81,16 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Post::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function reacts()
+    {
+        return $this->hasMany(React::class);
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscribe::class, 'user_id');

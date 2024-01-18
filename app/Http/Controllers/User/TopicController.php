@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SubscriptionResource;
 use App\Models\Subscribe;
 use App\Models\Topic;
 use App\Services\User\TopicService;
@@ -30,9 +31,15 @@ class TopicController extends Controller
         return $this->success('Get topics successful', $topics);
     }
 
+    public function getSubscribedTopics()
+    {
+        $topics = $this->topicService->getSubscribedTopics();
+        return $this->success('Get subscribed topics successful', SubscriptionResource::collection($topics));
+    }
+
     public function subscribeTopic($id)
     {
         $subscribe = $this->topicService->subscribeTopic($id);
-        return $this->success('Subscribe topic successful', $subscribe);
+        return $this->success('Subscribe topic successful', new SubscriptionResource($subscribe));
     }
 }
