@@ -24,7 +24,7 @@ class PostService
     {
         $query = Post::query();
 
-        //TODO::Search and filters
+        //TODO::By Topic, Search and filters
 
         $posts = $query->paginate(20);
 
